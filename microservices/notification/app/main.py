@@ -22,6 +22,8 @@ async def lifespan(app: FastAPI):
         app_name="notification",
         instance_ip="127.0.0.1",
         instance_port=PORT,
+        health_check_url=f"http://127.0.0.1:{PORT}/health",
+        status_page_url=f"http://127.0.0.1:{PORT}/info",
     )
     yield
     # Arrêt : désinscription d'Eureka
@@ -44,6 +46,18 @@ app = FastAPI(
 )
 
 app.include_router(notification.router)
+@app.get("/health", tags=["Actuator"], summary="Health check")
+def health():
+    return {"status": "UP"}
+
+
+@app.get("/info", tags=["Actuator"], summary="Service info")
+def info():
+    return {
+        "name": "notification",
+        "version": "1.0.0",
+        "description": "Notification microservice (Python / FastAPI)",
+    }
 
 
 if __name__ == "__main__":

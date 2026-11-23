@@ -9,8 +9,8 @@ module.exports = function registerWithEureka(PORT) {
             ipAddr: '127.0.0.1',
             port: { '$': Number(PORT), '@enabled': true },
             vipAddress: 'meeting',
-            statusPageUrl: `http://localhost:${PORT}/swagger-ui`,
-            healthCheckUrl: `http://localhost:${PORT}/api/meetings/hello`,
+            statusPageUrl: `http://localhost:${PORT}/info`,
+            healthCheckUrl: `http://localhost:${PORT}/health`,
             dataCenterInfo: {
                 '@class': 'com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo',
                 name: 'MyOwn',
