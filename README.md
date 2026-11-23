@@ -4,6 +4,9 @@ Année universitaire 2026-2027
 
 ## Équipe
 - Hiba Ben Amara
+- Leila Jendoubi
+- Adem Hchicha
+- Aziz Jouini
 
 ## Description
 Mise en place d'un serveur de découverte **Eureka** (Spring Cloud Netflix) auquel
