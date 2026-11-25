@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,11 @@ public class CandidateController {
     @ApiResponse(responseCode = "200", description = "List of candidates")
     public List<CandidateResponse> findAll() {
         return candidateService.findAll();
+    }
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello Im microservice 1!";
     }
 
     @GetMapping("/{id}")
@@ -103,5 +109,12 @@ public class CandidateController {
             content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     public CandidateResponse removeAddress(@Parameter(description = "Candidate id", example = "1") @PathVariable Long id) {
         return candidateService.removeAddress(id);
+    }
+    @Value("${server.port}")
+    private String port;
+
+    @GetMapping("/test")    public String test() {
+        System.out.println("Requête reçue sur l'instance : " + port);
+        return "Réponse de l'instance " + port;
     }
 }
