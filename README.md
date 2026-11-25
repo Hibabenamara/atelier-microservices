@@ -16,11 +16,11 @@ s'enregistrent des microservices écrits dans trois technologies différentes
 ## Architecture
 
 | Microservice | Technologie | Port | Nom dans Eureka |
-|---|---|---|---|
+|---|---|------|---|
 | Eureka Server | Spring Boot | 8761 | – |
 | Candidat | Spring Boot + H2 | 8081 | CANDIDAT |
 | Job | Spring Boot + MySQL | 8082 | JOB |
-| Candidature | Spring Boot | 8085 | CANDITATURE |
+| Candidature | Spring Boot | 8086 | CANDITATURE |
 | Meeting | Node.js / Express | 8083 | MEETING |
 | Notification | Python / FastAPI | 8084 | NOTIFICATION |
 
@@ -125,3 +125,25 @@ Routes `GET /health` et `GET /info` ajoutées dans `app/main.py`, déclarées da
 Registre Eureka (`/eureka/apps/NOTIFICATION`) avec les deux URL :
 
 ![Registre NOTIFICATION](docs/eureka-notification-xml.png)
+
+## API Gateway (Spring Cloud Gateway, port 8085)
+
+Routes : `/mic1/**` vers Candidat, `/mic3/**` vers Candidature.
+
+### Configuration statique
+`uri=http://localhost:8081` : la Gateway pointe directement vers le microservice,
+sans Eureka. Si le port change, la route est cassée.
+![Route statique](docs/gateway-statique.png)
+
+### Configuration dynamique (Eureka)
+`uri=lb://candidat` et `uri=lb://canditature` : la Gateway s'enregistre dans Eureka
+et résout le nom du service à chaque requête.
+![Eureka](docs/gateway-eureka.png)
+![Candidature via Gateway](docs/gateway-candidature.png)
+
+### Load balancing
+- Par défaut : **Round Robin** (alternance 8081 / 8091 dans les logs `url chosen`).
+  ![Round Robin](docs/gateway-roundrobin.png)
+- Random appliqué au seul service candidat : `CandidatLoadBalancerConfig`
+    + `@LoadBalancerClient(name = "candidat", ...)`.
+      ![Random](docs/gateway-random.png)
