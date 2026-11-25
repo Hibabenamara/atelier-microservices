@@ -143,7 +143,7 @@ et résout le nom du service à chaque requête.
 
 ### Load balancing
 - Par défaut : **Round Robin** (alternance 8081 / 8091 dans les logs `url chosen`).
-  ![Round Robin](docs/gateway-roundrobin.png)
+  ![Round Robin](docs/Round-Robin.png)
 - Random appliqué au seul service candidat : `CandidatLoadBalancerConfig`
     + `@LoadBalancerClient(name = "candidat", ...)`.
-      ![Random](docs/gateway-random.png)
+      ![Random](docs/GatewayApplication.png)
